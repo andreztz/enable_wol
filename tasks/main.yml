@@ -1,0 +1,17 @@
+---
+# tasks file for wolsetup
+- name: Ensure ethtool is installed
+  package:
+    name: ethtool
+    state: present
+
+- name: Create systemd service file
+  template:
+    src: wol@.service.j2
+    dest: /etc/systemd/system/wol@.service
+
+- name: Enable and start wol service
+  systemd:
+    name: "wol@{{ interface }}"
+    enabled: yes
+    state: started
